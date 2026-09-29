@@ -16,6 +16,22 @@ AI-Generated Code in CI/CD Pipelines
 | 5 | `05_SandboxEval_2504.00018.pdf` | SandboxEval: Towards Securing Test Environment for Untrusted Code | Rabin, Hostetler, McGregor, Weir, Judd | arXiv:2504.00018 (2025) | 面向"执行 LLM 生成代码"场景设计沙箱安全测试集，覆盖敏感信息泄露、文件系统篡改、外部通信等风险，指出现有沙箱基础设施的薄弱点 |
 | 6 | `06_LLMHallucinationSurvey_2510.06265.pdf` | Large Language Models Hallucination: A Comprehensive Survey | (综述, arXiv:2510.06265) | arXiv:2510.06265 (2025) | 通用 LLM 幻觉综述（定义/成因/分类/检测/缓解），为"代码幻觉"提供上位概念与术语基础 |
 
+## 补充文献：架构感知的文档/测试维护（支撑第二次汇报的新方向）
+
+在第一次汇报后，我们将研究角度从"通用代码幻觉检测"收窄为一个更具体的问题：**当 AI
+生成的代码改动被合并时，如何让受影响的模块文档和测试同步更新，并判断这种更新是否需要
+传播到其他关联模块。** 为此新增以下 4 篇最相关的已有工作，用于定位我们方法的创新点：
+
+| # | 文件 | 标题 | 作者 | 年份/venue | 与本项目的关系 |
+|---|------|------|------|-----------|----------------|
+| 7 | `07_RepoAgent_2402.16667.pdf` | RepoAgent: An LLM-Powered Open-Source Framework for Repository-level Code Documentation Generation | Luo et al. | arXiv:2402.16667 (2024) | 通过 git pre-commit hook 检测代码变更，定位受影响的对象及其双向引用，仅更新"最小受影响范围"内的文档。**局限**：粒度停留在函数/对象级 docstring，没有显式的模块级架构图，也不更新测试 |
+| 8 | `08_DocAgent_2504.08725.pdf` | DocAgent: A Multi-Agent System for Automated Code Documentation Generation | (Meta/FAIR 团队) | arXiv:2504.08725 (2025) | Reader/Searcher/Writer/Verifier/Orchestrator 多智能体协作，拓扑顺序逐步生成文档，并给出 Completeness/Helpfulness/Truthfulness 评测框架。**局限**：面向"从零生成文档"，不是"给定 diff 决定是否级联更新其他模块" |
+| 9 | `09_CASCADE_2604.19400.pdf` | CASCADE: Detecting Inconsistencies between Code and Documentation with Automatic Test Generation | Kiecker et al. | arXiv:2604.19400 (2026) | 用文档生成单测、用代码生成参照实现，双向交叉验证以检测代码-文档不一致，在真实仓库中发现 13 个此前未知的问题。**局限**：面向单个函数/文件级别的一致性检测，没有仓库级架构图，也没有跨模块传播机制 |
+| 10 | `10_RepositoryIntelligenceGraph_2601.10112.pdf` | Repository Intelligence Graph: Deterministic Architectural Map for LLM Code Assistants | Cherny-Shahar, Yehudai | arXiv:2601.10112 (2026) | 从构建系统（如 CMake）中抽取确定性的仓库架构图（可构建组件、聚合器、测试、外部依赖等），提供给编码 agent 后平均准确率提升 12.2%、完成时间减少 53.9%。**局限**：架构图仅用于辅助单次编码任务，不用于"diff→模块归属→级联决策"的文档/测试维护流程 |
+
+这四篇是目前检索到与我们新方法**最接近**的已有工作，因此也是论证创新点时最需要
+对比的基线。
+
 ## 未能下载全文的补充文献（付费墙，仅附链接与摘要）
 
 **We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by
